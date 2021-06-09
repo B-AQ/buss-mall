@@ -13,6 +13,11 @@ let userMaxAttempts = 25;
 let counter = 0;
 let pictureName=[];
 
+
+let votes=[];
+let shown=[];
+
+
 function BusMall(name, source) {
   this.name = name;
   this.source = source;
@@ -52,6 +57,7 @@ function randomIndex() {
   let randomIndex = Math.floor(Math.random() * BusMall.allImages.length);
   return randomIndex;
 }
+
 let savedStorage=[];
 function savedStorage() {
   let arraySring= JSON.stringify(BusMall.allImages);
@@ -59,17 +65,23 @@ function savedStorage() {
   
 }
 
+
+
+let shownPictures=[];
+
 function renderThreeImages() {
 
   leftImageIndex = randomIndex();
   centerImageIndex = randomIndex();
   rightImageIndex = randomIndex();
 
-  while (leftImageIndex === centerImageIndex || leftImageIndex === rightImageIndex || centerImageIndex === rightImageIndex) {
+  while (leftImageIndex === centerImageIndex || leftImageIndex === rightImageIndex || centerImageIndex === rightImageIndex || shownPictures.includes(leftImageIndex)||shownPictures.includes(centerImage)||shownPictures.includes(rightImageIndex)) {
 
     leftImageIndex = randomIndex();
+    rightImageIndex = randomIndex();
     centerImageIndex = randomIndex();
   }
+  shownPictures=[leftImageIndex,centerImageIndex,rightImageIndex];
 
   leftImage.src = BusMall.allImages[leftImageIndex].source;
   BusMall.allImages[leftImageIndex].timeShown++;
@@ -115,6 +127,9 @@ function userClick(event) {
     button.hidden = false;
     button.addEventListener('click', getList);
     divImages.removeEventListener('click', userClick);
+
+    chart();
+
   }
 
 }
@@ -132,39 +147,67 @@ function getList() {
 
 // Mychart
 
+function chart() {
+  for (let i = 0; i < BusMall.allImages.length; i++) {
 
-let ctx = document.getElementById('myChart');
-let myChart = new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: pictureName,
-    datasets: [{
-      label: '# of Votes',
-      data: [12, 19, 3, 5, 2, 3],
-      backgroundColor: [
-        'rgba(255, 99, 132, 0.2)',
-        'rgba(54, 162, 235, 0.2)',
-        'rgba(255, 206, 86, 0.2)',
-        'rgba(75, 192, 192, 0.2)',
-        'rgba(153, 102, 255, 0.2)',
-        'rgba(255, 159, 64, 0.2)'
-      ],
-      borderColor: [
-        'rgba(255, 99, 132, 1)',
-        'rgba(54, 162, 235, 1)',
-        'rgba(255, 206, 86, 1)',
-        'rgba(75, 192, 192, 1)',
-        'rgba(153, 102, 255, 1)',
-        'rgba(255, 159, 64, 1)'
-      ],
-      borderWidth: 1
-    }]
-  },
-  options: {
-    scales: {
-      y: {
-        beginAtZero: true
+    votes.push(BusMall.allImages[i].votes);
+    shown.push(BusMall.allImages[i].shown);
+  }
+
+  let ctx = document.getElementById('myChart');
+  let myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: pictureName,
+      datasets: [{
+        label: '# of Votes',
+        data: votes,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      },{
+        label: '# of shown',
+        data: shown,
+        backgroundColor: [
+          'rgba(255, 99, 132, 0.2)',
+          'rgba(54, 162, 235, 0.2)',
+          'rgba(255, 206, 86, 0.2)',
+          'rgba(75, 192, 192, 0.2)',
+          'rgba(153, 102, 255, 0.2)',
+          'rgba(255, 159, 64, 0.2)'
+        ],
+        borderColor: [
+          'rgba(255, 99, 132, 1)',
+          'rgba(54, 162, 235, 1)',
+          'rgba(255, 206, 86, 1)',
+          'rgba(75, 192, 192, 1)',
+          'rgba(153, 102, 255, 1)',
+          'rgba(255, 159, 64, 1)'
+        ],
+        borderWidth: 1
+      }]
+    },
+    options: {
+      scales: {
+        y: {
+          beginAtZero: true
+        }
       }
     }
-  }
-});
+  });
+}
+
