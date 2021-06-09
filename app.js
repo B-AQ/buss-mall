@@ -12,8 +12,11 @@ let rightImageIndex;
 let userMaxAttempts = 25;
 let counter = 0;
 let pictureName=[];
+
+
 let votes=[];
 let shown=[];
+
 
 function BusMall(name, source) {
   this.name = name;
@@ -55,7 +58,17 @@ function randomIndex() {
   return randomIndex;
 }
 
+let savedStorage=[];
+function savedStorage() {
+  let arraySring= JSON.stringify(BusMall.allImages);
+  localStorage,setItem(votes,arraySring)
+  
+}
+
+
+
 let shownPictures=[];
+
 function renderThreeImages() {
 
   leftImageIndex = randomIndex();
