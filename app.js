@@ -31,6 +31,31 @@ function BusMall(name, source) {
 
 BusMall.allImages = [];
 
+
+function updateStorage(){
+  let productString=JSON.stringify(BusMall.allImages);
+
+  localStorage.setItem('bus',productString);
+  console.log(productString);
+}
+
+function getPreviousResults(){
+  let info=localStorage.getItem('bus');
+  let returnObject=JSON.parse(info);
+
+  if(returnObject!==null){
+    BusMall.allImages=returnObject;
+
+  }
+
+
+}
+
+
+
+
+
+
 new BusMall('bag', 'img/bag.jpg');
 new BusMall('banana', 'img/banana.jpg');
 new BusMall('bathroom', 'img/bathroom.jpg');
@@ -61,8 +86,8 @@ function randomIndex() {
 let savedStorages=[];
 function savedStorage() {
   let arraySring= JSON.stringify(BusMall.allImages);
-  localStorage,setItem(votes,arraySring)
-  
+  localStorage,setItem(votes,arraySring);
+
 }
 
 
@@ -128,11 +153,13 @@ function userClick(event) {
     button.addEventListener('click', getList);
     divImages.removeEventListener('click', userClick);
 
+    updateStorage();
     chart();
 
   }
 
 }
+getPreviousResults();
 
 function getList() {
   let ul = document.getElementById('list-results');
