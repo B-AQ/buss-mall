@@ -58,7 +58,7 @@ function randomIndex() {
   return randomIndex;
 }
 
-let savedStorage=[];
+let savedStorages=[];
 function savedStorage() {
   let arraySring= JSON.stringify(BusMall.allImages);
   localStorage,setItem(votes,arraySring)
@@ -209,5 +209,5 @@ function chart() {
       }
     }
   });
-}
+};
 
